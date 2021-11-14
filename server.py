@@ -57,7 +57,7 @@ def create_user():
     )
     db.session.add(new_user)
     db.session.commit()
-    return jsonify({"message": "User created"}), 200
+    return jsonify({"message": "User created"}), 201
 
 
 @app.route("/user/descending_id", methods=["GET"])
@@ -78,18 +78,46 @@ def get_all_users_descending():
 
 @app.route("/user/ascending_id", methods=["GET"])
 def get_all_users_ascending():
-    pass
+    users = User.query.all()
+    all_user_ll = linked_list.LinkedList()
+    for user in users:
+        all_user_ll.insert_beginning({
+            "id": user.id,
+            "name": user.name,
+            "email": user.email,
+            "address": user.address,
+            "phone": user.phone
+        })
+    return jsonify({"users": all_user_ll.to_list()}), 200
+    
 
 
 @app.route("/user/<user_id>", methods=["GET"])
 def get_one_user(user_id):
-    pass
+    users = User.query.all()
+    all_user_ll = linked_list.LinkedList()
+    for user in users:
+        all_user_ll.insert_beginning({
+            "id": user.id,
+            "name": user.name,
+            "email": user.email,
+            "address": user.address,
+            "phone": user.phone
+        })
+    required_user = all_user_ll.get_node_by_id(user_id)
+    if required_user == None:
+        return jsonify({"msg": "No user exists with the passed user_id"}), 400
+    return jsonify({"user": required_user}), 200
 
 
 @app.route("/user/<user_id>", methods=["DELETE"])
 def delete_user(user_id):
-    pass
-
+    user = User.query.filter_by(id=user_id).first()
+    db.session.delete(user)
+    db.session.commit()
+    return jsonify({"msg": f"user with id {user_id} deleted successfully"}), 200
+    
+    
 @app.route("/blog_post/<user_id>", methods=["POST"])
 def create_blog_post(user_id):
     pass
