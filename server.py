@@ -4,8 +4,11 @@ from sqlalchemy import event
 from sqlalchemy.engine import Engine
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from BinarySearchTree.binary_search_tree import BinarySearchTree
 from HashMap.hash_map import HashTable
 from LinkedList import linked_list
+import random
+
 
 # main app
 app = Flask(__name__)
@@ -149,7 +152,28 @@ def create_blog_post(user_id):
 
 @app.route("/blog_post/<blog_post_id>", methods=["GET"])
 def get_one_blog_post(blog_post_id):
-    pass
+    blog_posts = BlogPost.query.all() # default order is accending
+    """
+        NOTE: as the default order is accending while inserting
+        data into bst it will the tree unbalanced which will lead to
+        linear order of search
+    """
+    # HACK: randomize the order before insert this will result in constructing a balanced bst
+    random.shuffle(blog_posts)
+    bst = BinarySearchTree()
+    for post in blog_posts:
+        bst.insert_data({
+            "id" : post.id,
+            "title" : post.title,
+            "body" : post.body,
+            "user_id" : post.user_id
+        })
+    target_post = bst.search(blog_post_id)
+    if not target_post:
+        return jsonify({"error": "post not found"}), 400
+    
+    return jsonify({"message": "post found", "data":target_post}), 200
+    
 
 @app.route("/blog_post/numeric_body", methods=["GET"])
 def get_numeric_post_bodies():
