@@ -4,6 +4,7 @@ from sqlalchemy import event
 from sqlalchemy.engine import Engine
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from HashMap.hash_map import HashTable
 from LinkedList import linked_list
 
 # main app
@@ -120,7 +121,31 @@ def delete_user(user_id):
     
 @app.route("/blog_post/<user_id>", methods=["POST"])
 def create_blog_post(user_id):
-    pass
+    data = request.get_json()
+    user = User.query.filter_by(id=user_id).first()
+    if not user:
+        return jsonify({"error": "no user exists with given user_id"}), 400
+    # TODO: static table size has to be user based
+    ht = HashTable(10)
+    ht.add_key_value_pair("title",data["title"])
+    ht.add_key_value_pair("body", data["body"])
+    ht.add_key_value_pair("date",now)
+    ht.add_key_value_pair("user_id",user_id)
+    """
+        for visualization purpose only
+        in the terminal view
+    """
+    ht.print_table()
+    new_blog = BlogPost(
+        title = ht.get_value("title"),
+        body = ht.get_value("body"),
+        date = ht.get_value("date"),
+        user_id = ht.get_value("user_id")
+    )
+    db.session.add(new_blog)
+    db.session.commit()
+    return jsonify({"message": "New blog post created"}), 201
+    
 
 @app.route("/blog_post/<blog_post_id>", methods=["GET"])
 def get_one_blog_post(blog_post_id):
