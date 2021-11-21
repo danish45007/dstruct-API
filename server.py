@@ -9,6 +9,9 @@ from HashMap.hash_map import HashTable
 from LinkedList import linked_list
 import random
 
+from Queue.queue import Queue
+from Stack.stack import Stack
+
 
 # main app
 app = Flask(__name__)
@@ -162,26 +165,54 @@ def get_one_blog_post(blog_post_id):
     random.shuffle(blog_posts)
     bst = BinarySearchTree()
     for post in blog_posts:
-        bst.insert_data({
-            "id" : post.id,
-            "title" : post.title,
-            "body" : post.body,
-            "user_id" : post.user_id
+        bst.insert({
+            "id": post.id,
+            "title": post.title,
+            "body": post.body,
+            "user_id": post.user_id
         })
     target_post = bst.search(blog_post_id)
     if not target_post:
         return jsonify({"error": "post not found"}), 400
     
-    return jsonify({"message": "post found", "data":target_post}), 200
+    return jsonify({"message": "post found", "data":target_post})
     
 
 @app.route("/blog_post/numeric_body", methods=["GET"])
 def get_numeric_post_bodies():
-    pass
+    custom_queue = Queue()
+    numeric_data_list = []
+    blogs = BlogPost.query.all()
+    for blog in blogs:
+        custom_queue.enqueue(blog)
+    for _ in range(len(blogs)):
+        post = custom_queue.dequeue()
+        numeric_body = 0
+        for char in post.data.body:
+            numeric_body += ord(char)
+        post.data.body = numeric_body
+        numeric_data_list.append({
+            "id": post.data.id,
+            "title": post.data.title,
+            "body": post.data.body,
+            "user_id": post.data.user_id
+        })
+    
+    return jsonify(numeric_data_list)
+            
 
-@app.route("/blog_post/delete_last_10", methods=["DELETE"])
-def delete_last_10():
-    pass
+@app.route("/blog_post/delete_last_n_posts/<n>", methods=["DELETE"])
+def delete_last_n_posts(n):
+    custom_stack = Stack()
+    blogs = BlogPost.query.all()
+    for post in blogs:
+        custom_stack.push(post)
+    for _ in range(n):
+        deleted_post = custom_stack.pop()
+        db.session.delete(deleted_post)
+        db.session.commit()
+    return jsonify({"message": "successfully deleted posts"})
+        
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="127.0.0.1",debug=True,port=5555)

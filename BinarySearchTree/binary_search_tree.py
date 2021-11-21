@@ -1,51 +1,48 @@
 class Node:
-    def __init__(self,data=None):
+    def __init__(self, data=None):
         self.data = data
-        self.left = None,
+        self.left = None
         self.right = None
-    
+
 class BinarySearchTree:
     def __init__(self):
         self.root = None
-        
-    def _insert_recursive(self,data,node):
+
+    def _insert_recursive(self, data, node):
         if data["id"] < node.data["id"]:
             if node.left is None:
                 node.left = Node(data)
             else:
-                self._insert_recursive(data,node.left)
+                self._insert_recursive(data, node.left)
         elif data["id"] > node.data["id"]:
             if node.right is None:
                 node.right = Node(data)
             else:
-                self._insert_recursive(data,node.right)
+                self._insert_recursive(data, node.right)
         else:
             return
-                
-    def insert_data(self,data):
+
+    def insert(self, data):
         if self.root is None:
             self.root = Node(data)
         else:
-            self._insert_recursive(data,self.root)
-            
-    def _search_recursive(self,id,node):
-        if node.left == None and node.right == None:
-            return False
-        if id == node.data["id"]:
+            self._insert_recursive(data, self.root)
+
+
+    def _search_recursive(self, blog_post_id, node):
+        if blog_post_id == node.data["id"]:
             return node.data
-        # search in the left node
-        if id < node.data["id"] and id == node.left.data["id"]:
-            return node.left.data
-        else:
-            self._search_recursive(id,node.left)
-        # search in right node
-        if id > node.data["id"] and id == node.right.data["id"]:
-            return node.right.data
-        else:
-            self._search_recursive(id,node.right)
-                   
-    def search(self,id):
-        _id = int(id)
+        
+        if blog_post_id < node.data["id"] and node.left is not None:
+            return self._search_recursive(blog_post_id, node.left)
+
+        if blog_post_id > node.data["id"] and node.right is not None:
+            return self._search_recursive(blog_post_id, node.right)
+
+        return False
+
+    def search(self, blog_post_id):
+        blog_post_id = int(blog_post_id)
         if self.root is None:
             return False
-        return self._search_recursive(_id,self.root)
+        return self._search_recursive(blog_post_id, self.root)
