@@ -26,3 +26,14 @@ class Queue:
         if self.head is None:
             self.tail = None
         return removed
+    
+    def to_list(self):
+        if self.head is None and self.tail is None:
+            return []
+        node = self.head
+        res = []
+        while node:
+            res.append(node.data)
+            node = node.next_node
+        return res
+            

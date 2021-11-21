@@ -47,6 +47,8 @@ class HashTable:
         return None
     
     def print_table(self):
+        res = ""
+        res += "{"
         print("{")
         for i,val in enumerate(self.hash_table):
             if val is not None:
@@ -62,12 +64,17 @@ class HashTable:
                     llist_string += (
                         str(node.data.key) + " : " + str(node.data.value) + " --> None"
                     )
+                    res += f"    [{i}] {llist_string}"
                     print(f"    [{i}] {llist_string}")
                 else:
+                    res += f"    [{i}] {val.data.key} : {val.data.value}"
                     print(f"    [{i}] {val.data.key} : {val.data.value}")
             else:
+                res += f"    [{i}] {val}"
                 print(f"    [{i}] {val}")
+        res += "}"
         print("}")
+        return res
                 
              
             
