@@ -1,4 +1,5 @@
 import argparse
+from Algoz.algorithms.search.breadth_first_search import search
 
 def main():
     """
@@ -27,7 +28,7 @@ def main():
     args = parser.parse_args()
     
     if args.search_algorithm == "binary-search": 
-        pass
+        search()
     
     if args.search_algorithm == "depth-first-search": 
         pass
