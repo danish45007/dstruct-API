@@ -1,5 +1,7 @@
 import argparse
-from Algoz.algorithms.search.breadth_first_search import search
+from search import breadth_first_search
+from search import depth_first_search
+from search import binary_search
 
 def main():
     """
@@ -23,18 +25,25 @@ def main():
     parser.add_argument("-sa", "--search-algorithm",choices=["binary-search","depth-first-search","breadth-first-search"], required=True, help="The Algorithm To Be Used To Perform Search")
         
     # 4. order at what searching will be performed
-    parser.add_argument("-o", "--order",choices=["pre-order","post-order","level-order"], required=True, help="The Order In Which To Traverse Tree")
+    """
+        breath-first-search -> level-order
+        depth-first-search -> [pre-order, post-order, in-order]
+    """
+    parser.add_argument("-o", "--order",choices=["pre-order","post-order","in-order","level-order"], required=True, help="The Order In Which To Traverse Tree")
     
     args = parser.parse_args()
     
     if args.search_algorithm == "binary-search": 
-        search()
+        binary_search.search(args)
+        return
     
     if args.search_algorithm == "depth-first-search": 
-        pass
+        binary_search.search(args)
+        return
     
     if args.search_algorithm == "breadth-first-search": 
-        pass
+        breadth_first_search.search(args)
+        return
     
 
 

@@ -1,5 +1,5 @@
-from node import Node
-from queue_ import Queue
+from data_structure.node import Node
+from data_structure.queue_ import Queue
 
 class BinaryTree:
     def __init__(self):
