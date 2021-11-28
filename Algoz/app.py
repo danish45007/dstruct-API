@@ -38,7 +38,7 @@ def main():
         return
     
     if args.search_algorithm == "depth-first-search": 
-        binary_search.search(args)
+        depth_first_search.search(args)
         return
     
     if args.search_algorithm == "breadth-first-search": 

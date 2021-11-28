@@ -1,6 +1,6 @@
 bfs:
 	echo "running test file against breadth first search"
-	python3 app.py -w "770" -f test.txt  -sa breadth-first-search -o level-order
+	python3 app.py -w "77000" -f test.txt  -sa breadth-first-search -o level-order
 
 dfs-pre:
 	echo "running test file against depth first search for pre-order"
