@@ -15,6 +15,6 @@ dfs-in:
 	python3 app.py -w "770" -f test.txt  -sa depth-first-search -o in-order
 
 
-binary:
+bst:
 	echo "running test file against binary search"
-	python3 app.py -w "770" -f test.txt  -sa binary-search -o level-order
+	python3 app.py -w "770" -f test.txt  -sa binary-search

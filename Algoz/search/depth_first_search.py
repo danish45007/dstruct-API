@@ -112,4 +112,8 @@ def search(args):
         else:
             console.print("Word, [bold magenta]Not Found[/bold magenta]", ":pile_of_poo:", locals(),style=not_found_style)
             return
+    else:
+        console.print("[bold underline red]depth-first-search can only be used with --order [pre-order,post-order,in-order][/bold underline red]", ":raccoon:", locals())
+        return
+    
         

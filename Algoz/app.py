@@ -29,7 +29,7 @@ def main():
         breath-first-search -> level-order
         depth-first-search -> [pre-order, post-order, in-order]
     """
-    parser.add_argument("-o", "--order",choices=["pre-order","post-order","in-order","level-order"], required=True, help="The Order In Which To Traverse Tree")
+    parser.add_argument("-o", "--order",choices=["pre-order","post-order","in-order","level-order"], required=False, help="The Order In Which To Traverse Tree")
     
     args = parser.parse_args()
     
